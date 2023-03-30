@@ -46,16 +46,20 @@ sudo pip3 install python-can
 sudo pip3 install RPi.GPIO
 sudo pip3 install smbus
 ```
-
-
-
-
-
-
-
-work in progress....
 ### Software
+Im Code werden nach dem Laden der Libraries zunächst die festen Parameter gesetzt. 
+Damit der SI möglichst nur kritische Fehler detektiert, die z.B. bei defektem BMS auftreten, setze ich den erlaubten Bereich für Spannungen und Ströme größer, gerade noch im unkritischen Bereich für die verwendeten Zellen, an als im BMS. Diese Werte setzen dann den äußeren Rahmen für die Arbeit des (der) BMS, welche(s) vollkommen unabhängig die Batterieblocks absichern. Der SI schaltet sich dann nur bei Abschaltung der Batterie durch das BMS ab.
+Die Lade- und Entladeströme setze ich auf etwa 0,2C.
 
+Der Parameter "n" wird auf die Anzahl der ggf. parallel geschalteten Batterieblöcke gesetzt, da ja nur ein BMS ausgelesen wird. Ich nutze z.B. vier Batterieblöcke parallel, jedes mit einem eigenen BMS, lese jedoch nur ein BMS aus und multipliziere die Werte für Strom und Kapazität mit dem Faktor n=4.
+
+Der State Of Health (SOH) wird vom JK-BMS nicht ermittelt und wird fest auf 100% festgesetzt.
+
+Anschließend werden die Daten vom BMS angefordert. Aus dem daraufhin emfangenen Hex String werden dann die entsprechenden Wertepaare ausgelesen. Der Code ist für eine LiFePo4 Batterie mit 16 Zellen geschrieben. Bei Verwendung von Litium-Ionen Batterien kommen aufgrund der höheren Zellenspannung in der Regel weniger Zellen zum Einsatz.  Da der String je nach Zellenzahl unterschiedlich lang ist, verändert sich die Position der benötigten Werte. Die Adressen der Werte können aber abhand der Dokumentation des Protokolls (bms.protocol.v2.5.english.pdf) bestimmt werden. Entsprechend müssen dann die mit * kommentierten Zeilen angepasst werden.
+
+Zur Kontrolle werfen die ausgelesenen und verarbeiteten Werte ausgegeben, wenn SIinterJK diskret gestartet wird (nicht im Hintergrund).
+
+Anschließend werden die verarbeiteten Werte für die CAN-Ausgabe formatiert und abgeschickt.
 
 ### Sehr hilfreiche Quellen bei GitHub:
 https://github.com/jblance/mpp-solar/issues/112 ab 18.05.21 werden hier die Befehle an das JK-BMS sowie das Antwortformat beschrieben.

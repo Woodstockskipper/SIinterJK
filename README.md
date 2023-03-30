@@ -48,4 +48,4 @@ work in progress....
 
 
 ### Sehr hilfreiche Quellen bei GitHub:
-https://github.com/jblance/mpp-solar/issues/112 ab 18.05.21
+https://github.com/jblance/mpp-solar/issues/112 ab 18.05.21 werden hier die Befehle an das JK-BMS sowie das Antwortformat beschrieben.

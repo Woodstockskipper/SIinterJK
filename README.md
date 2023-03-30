@@ -2,13 +2,22 @@
 ## Interface zur Übertragung der Daten vom JiKong-BMS (RS485) zum SMA Sunny Island 6.0 (CAN)
 ### Vorgeschichte
 Seit etwa einem Jahr besitze ich eine selbst gebaute LiFePo4 Batterie zur Zwischenspeicherung meiner PV-Energie. Die Batterie besteht aus vier parallel geschalteten Blöcken mit je 7 kWh Kapazität. Jeder Block von 16 in Reihe geschalteten 3,2V Zellen wird mit einem Batteriemanagementsystem (BMS), Typ JiKong BD6A20S-10P, überwacht und aktiv balanciert.
-Als Batterieumrichter benutze ich den Sunny Island 6.0 (SI) von SMA. Dieser besitzt zwei Betriebsmodi: 1) für Litium Batterien mit einem eigenen BMS und CAN-Bus Kommunikation mit dem SI und 2) für Bleibatterien, für die er entsprechende Lade- und Entladeprogramme besitzt.
-Da das BMS von JK über eine RS485 Schnittstelle verfügt, die natürlich nicht mit dem SI interagiert, habe ich meine LiFePo4 Batterie im Modus für Bleibatterien am SI betrieben, was funktioniert, jedoch wird nur etwa 50% der Batteriekapazität genutzt. Die Bleibatterie hat eine relativ linearen Verlauf der Kapazität über der Spannung, wodurch der SI die Bleibatterie sehr gut managen kann und der SOC (State Of Charge) gut bestimmt wird. Da jedoch die LiFePo4 Batterien über 85% ihrer Kapazität bei etwa 3,2V verharren, kommt es zu der fehlerhaften SOC Berechnung des SI und der eingeschränkten Kapazitätsnutzung.
-Daher reifte der Wunsch heran einen Adapter zwischen der RS485 Schnittstelle des JK BMS und dem CAN Anschluss des SI zu bauen.
+
+Als Batterieumrichter benutze ich den Sunny Island 6.0 (SI) von SMA. Dieser besitzt zwei Betriebsmodi: 
+
+1) für Litium Batterien mit einem eigenen BMS und CAN-Bus Kommunikation mit dem SI und 
+2) für Bleibatterien, für die er entsprechende Lade- und Entladeprogramme besitzt.
+
+Da das BMS von JK über eine RS485 Schnittstelle verfügt, die natürlich nicht mit dem SI interagiert, habe ich meine LiFePo4 Batterie im Modus für Bleibatterien am SI betrieben, was funktioniert, jedoch wird nur etwa 50% der Batteriekapazität genutzt. Die Bleibatterie hat einen relativ linearen Verlauf der Kapazität über der Spannung, wodurch der SI die Bleibatterie sehr gut managen kann und der SOC (State Of Charge) gut bestimmt wird. Da jedoch die LiFePo4 Batterien über 85% ihrer Kapazität bei etwa 3,2V verharren, kommt es zu der fehlerhaften SOC Berechnung des SI und der eingeschränkten Kapazitätsnutzung.
+
+Daher reifte der Wunsch heran einen Adapter zwischen der RS485 Schnittstelle des JK BMS und dem CAN Anschluss des SI zu bauen, um die Möglichkeiten des SI voll zu nutzen.
+Meine letzten Programmiererfahrungen waren allerdings über 40 Jahre alt (Fortran, Pascal) und so habe ich mich mit Hilfe der Dokumentation des WaveShare HATs einigen Repositorys aus Github (siehe Verweise) und ChatGBT an Pyhon versucht. Ich bitte daher zu entschuldigen, wenn der Code u.U. ein wenig holperig ist. Ich lade jeden ein Verbesserungen vorzuschlagen und ggf. eine kleine Oberfläche zu bauen um die Werte attraktiv z.B. per Browser darzustellen.
 ### Hardware
 Da ich ein wenig Vorkenntnisse im Betrieb von Raspberry Pi habe, lag es nahe den auch für diese Aufgabe zu verwenden. So besorgte ich mir einen Raspberry Pi 3B (2B und 3A funktionieren ebenfalls), den RS485/CAN HAT von WaveShare und den passenden RS485 Adapter von JiKong, wobei bei letzterem darauf geachtet werden muss, dass dieser zum BMS Typ passt. Daher bei Bestellung unbedingt den BMS Typen angeben!
+
 Dann RS485 Adapter an den GPS-Anschluss des BMS anschließen (möglichst spannungsfrei, die Dinger sind sehr empfindlich!) Dann die gelbe Ader des freien Endes an Anschluss A des HATs und Die weiße Ader an Anschluss B des Hats.
 Anschließend die Adern 4 und 5 eines CAT5 Kabels mit RJ45 Stecker an CAN_H (4) und CAN_L (5) des HATs anschließen. Die Adern 3 und 6 mit einem 120 Ohm Widerstand terminieren. Siehe auch Datei "SMA CAN protocol(2).pdf".
+
 Anschließend den RJ45 Stecker in die entsprechende Buchse des SI einstecken.
 ### Einrichten des Raspberry Pi
 Zunächst wird ein Rasbian Image auf eine Micro SD Karte geschrieben. Hierbei darauf achten, dass eine SSH Verbindung ermöglicht wird.
@@ -45,6 +54,7 @@ sudo pip3 install smbus
 
 
 work in progress....
+### Software
 
 
 ### Sehr hilfreiche Quellen bei GitHub:

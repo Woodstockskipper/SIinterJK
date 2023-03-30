@@ -47,5 +47,5 @@ sudo pip3 install smbus
 work in progress....
 
 
-### Sehr Hilfreiche Quellen bei GitHub:
+### Sehr hilfreiche Quellen bei GitHub:
 https://github.com/jblance/mpp-solar/issues/112

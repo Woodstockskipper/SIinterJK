@@ -27,12 +27,15 @@ os.system('sudo ifconfig can0 up')
 can0 = can.interface.Bus(channel = 'can0', bustype = 'socketcan')# socketcan_native CAN Schnittstelle definieren
 can0.flush_tx_buffer() # CAN socket buffer leeren
 
-# Fixe Parameter definieren:
+# Fixe Parameter definieren: (bitte auf Eure Batterien anpassen)
 bcv = 550 # set Battery charge voltage to 55V /0,1
 dccl = 1150 # set DC charge current limitation to 115A /0,1
 ddcl = 1150 # set DC discharge current limitation to 115A /0,1
 bdv = 450 # set min. Battery discharge voltage to 45,0V /0,1
-n = 4 # Anzahl der parallel geschalteten Batterien / BMS wenn nur ein BMS ausgelesen wird.
+n = 1 # Anzahl der parallel geschalteten Batterien / BMS wenn nur ein BMS ausgelesen wird.
+# SOH wird weiter unten immer auf 100% gesetzt.
+# Damit der SI möglichst wenig Fehler detektiert, setze ich den erlaubten Bereich für Spannungen und Ströme größer (gerade noch im erlaubten Bereich)an als im BMS.
+# So sichert das BMS die Batterieblocks ab und der SI schaltet sich nur bei Abschaltung der Batterie durch das BMS ab.
 
 while True:
 # Holen der Informationen vom BMS:
@@ -41,7 +44,7 @@ while True:
 	len = t.write(command)    
 	#print ("length:",len) 
 	stri = t.read(291) # Dieser Wert muss ggf. angepasst werden wenn mehr oder weniger als 16 Batteriezellen verwendet werden
-	#print (stri.hex()) # Unkommentieren um die Antwort des BMS zu sehen
+	#print (stri.hex()) # Unkommentieren um die Antwort des BMS zu sehen, z.B. zum Auszählen der Werte bei abweichender Anzahl von Zellen
 	
 	# Zeit anzeigen
 	now = datetime.now() 

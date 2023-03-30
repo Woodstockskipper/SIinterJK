@@ -1,5 +1,5 @@
 # SIinterJK
-## Interface zur Übertragung der Daten vom JiKong-BMS (RS485) zum SMA Sunny Island 6.0 (CAN)
+## Interface zur Übertragung der Batteriedaten vom JiKong-BMS (RS485) zum SMA Sunny Island 6.0 (CAN)
 ### Vorgeschichte
 Seit etwa einem Jahr besitze ich eine selbst gebaute LiFePo4 Batterie zur Zwischenspeicherung meiner PV-Energie. Die Batterie besteht aus vier parallel geschalteten Blöcken mit je 7 kWh Kapazität. Jeder Block von 16 in Reihe geschalteten 3,2V Zellen wird mit einem Batteriemanagementsystem (BMS), Typ JiKong BD6A20S-10P, überwacht und aktiv balanciert.
 
@@ -8,7 +8,7 @@ Als Batterieumrichter benutze ich den Sunny Island 6.0 (SI) von SMA. Dieser besi
 1) für Litium Batterien mit einem eigenen BMS und CAN-Bus Kommunikation mit dem SI und 
 2) für Bleibatterien, für die er entsprechende Lade- und Entladeprogramme besitzt.
 
-Da das BMS von JK über eine RS485 Schnittstelle verfügt, die natürlich nicht mit dem SI interagiert, habe ich meine LiFePo4 Batterie im Modus für Bleibatterien am SI betrieben, was funktioniert, jedoch wird nur etwa 50% der Batteriekapazität genutzt. Die Bleibatterie hat einen relativ linearen Verlauf der Kapazität über der Spannung, wodurch der SI die Bleibatterie sehr gut managen kann und der SOC (State Of Charge) gut bestimmt wird. Da jedoch die LiFePo4 Batterien über 85% ihrer Kapazität bei etwa 3,2V verharren, kommt es zu der fehlerhaften SOC Berechnung des SI und der eingeschränkten Kapazitätsnutzung.
+Da das BMS von JK über eine RS485 Schnittstelle verfügt, die nicht mit dem CAN- Protokoll des SI interagiert, habe ich meine LiFePo4 Batterie im Modus für Bleibatterien am SI betrieben, was funktioniert, jedoch werden nur etwa 50% der Batteriekapazität genutzt. Bleibatterien haben einen relativ linearen Verlauf der Kapazität über der Spannung, wodurch der SI die Bleibatterie sehr gut managen kann und der SOC (State Of Charge) gut bestimmt wird. Da jedoch LiFePo4 Batterien über 85% ihrer Kapazität bei etwa 3,2V verharren, kommt es zu der fehlerhaften SOC Berechnung des SI und der eingeschränkten Kapazitätsnutzung.
 
 Daher reifte der Wunsch heran einen Adapter zwischen der RS485 Schnittstelle des JK BMS und dem CAN Anschluss des SI zu bauen, um die Möglichkeiten des SI voll zu nutzen.
 Meine letzten Programmiererfahrungen waren allerdings über 40 Jahre alt (Fortran, Pascal) und so habe ich mich mit Hilfe der Dokumentation des WaveShare HATs einigen Repositorys aus Github (siehe Verweise) und ChatGBT an Pyhon versucht. Ich bitte daher zu entschuldigen, wenn der Code u.U. ein wenig holperig ist. Ich lade jeden ein Verbesserungen vorzuschlagen und ggf. eine kleine Oberfläche zu bauen um die Werte attraktiv z.B. per Browser darzustellen.

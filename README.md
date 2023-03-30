@@ -1,5 +1,5 @@
 # SIinterJK
-## Interface zur Übertragung der Daten von RS485 JK-BMS zum CAN des SMA Sunny Island 6.0
+## Interface zur Übertragung der Daten von RS485 JK-BMS zum CAN-Bus des SMA Sunny Island 6.0
 ### Vorgeschichte
 Seit etwa einem Jahr besitze ich eine selbst gebaute LiFePo4 Batterie zur Zwischenspeicherung meiner PV-Energie. Die Batterie besteht aus vier parallel geschalteten Blöcken mit je 7 kWh Kapazität. Jeder Block von 16 in Reihe geschalteten 3,2V Zellen wird mit einem Batteriemanagementsystem (BMS), Typ JiKong BD6A20S-10P, überwacht und aktiv balanciert.
 Als Batterieumrichter benutze ich den Sunny Island 6.0 (SI) von SMA. Dieser besitzt zwei Betriebsmodi: 1) für Litium Batterien mit einem eigenen BMS und CAN-Bus Kommunikation mit dem SI und 2) für Bleibatterien, für die er entsprechende Lade- und Entladeprogramme besitzt.
@@ -20,7 +20,7 @@ enable_uart=1
 # Bluetooth (UART(0)) nicht deaktivieren!
 ```
 Nun kann die SD Karte in den Raspberry Pi geschoben werden und dieser gestartet werden.
-Mit SSH loggen Sie sich auf dem Raspberry  Pi ein und installieren nun einige Bibliotheken:
+Mit SSH loggst Du Dich auf dem Raspberry Pi ein und installierst nun einige Bibliotheken:
 ```
 cd
 sudo apt-get install python3-pip

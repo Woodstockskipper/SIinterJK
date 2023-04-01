@@ -68,4 +68,5 @@ Der gesamte Vorgang wird etwa alle 10s wiederholt. Bleiben am SI für 60s die Da
 
 ### Sehr hilfreiche Quellen:
 https://github.com/jblance/mpp-solar/issues/112  ab 18.05.21 werden hier die Befehle an das JK-BMS sowie das Antwortformat beschrieben. (besser als in der Originaldokumentation)
+
 https://github.com/camueller/SmartApplianceEnabler  Tolles Tool zum Messen und Schalten von Verbrauchern in Verbindung mit dem SMA Homemanager 2.0.

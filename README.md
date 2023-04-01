@@ -47,19 +47,25 @@ sudo pip3 install RPi.GPIO
 sudo pip3 install smbus
 ```
 ### Software
-Im Code werden nach dem Laden der Libraries zunächst die festen Parameter gesetzt. 
-Damit der SI möglichst nur kritische Fehler detektiert, die z.B. bei defektem BMS auftreten, setze ich den erlaubten Bereich für Spannungen und Ströme größer, gerade noch im unkritischen Bereich für die verwendeten Zellen, an als im BMS. Diese Werte setzen dann den äußeren Rahmen für die Arbeit des (der) BMS, welche(s) vollkommen unabhängig die Batterieblocks absichern. Der SI schaltet sich dann nur bei Abschaltung der Batterie durch das BMS ab.
+Im Code werden nach dem Laden der Libraries zunächst die Parameter der Schnittstellen definiertund anschließende die festen Parameter für den SI gesetzt. 
+Damit der SI möglichst nur kritische Fehler detektiert, die z.B. bei defektem BMS auftreten, setze ich den erlaubten Bereich für Spannungen und Ströme größer, gerade noch im unkritischen Bereich für die verwendeten Zellen, an als im BMS. Diese Werte setzen dann den äußeren Rahmen für die Arbeit des (der) BMS, welche(s) vollkommen unabhängig die Batterieblocks absichern. Der SI schaltet sich dann nur bei Abschaltung der Batterie durch das BMS oder Erreichen des unteren Entladegrenze ab.
 Die maximalen Lade- und Entladeströme setze ich ebenfalls kleiner als der SI leistet und größer als im BMS eingestellt.
 
 Der Parameter "n" wird auf die Anzahl der ggf. parallel geschalteten Batterieblöcke gesetzt, da ja nur ein BMS ausgelesen wird. Ich nutze z.B. vier Batterieblöcke parallel, jedes mit einem eigenen BMS, lese jedoch nur ein BMS aus und multipliziere die Werte für Strom und Kapazität mit dem Faktor n=4. Dies hat sich bei gleicher Kapazität der Blöcke als ausreichend erwiesen.
 
 Der State Of Health (SOH) wird vom JK-BMS nicht ermittelt und wird fest auf 100% festgesetzt.
 
-Nach der Konfiguration der Schnittstellen werden die Daten vom BMS angefordert. Aus dem daraufhin emfangenen Hex String werden dann die entsprechenden Wertepaare ausgelesen. Der Code ist für eine LiFePo4 Batterie mit 16 Zellen geschrieben. Bei Verwendung von Litium-Ionen Batterien kommen aufgrund der höheren Zellenspannung in der Regel weniger Zellen zum Einsatz.  Da der Antwortstring je nach Zellenzahl unterschiedlich lang ist, verändert sich die Position der benötigten Werte. Die Adressen der Werte können aber anhand der Dokumentation des Protokolls (bms.protocol.v2.5.english.pdf) bestimmt werden. Entsprechend müssen dann die mit * kommentierten Zeilen angepasst werden.
+Im nächsten Schritt werden die Daten vom BMS angefordert. Aus dem daraufhin emfangenen Hex String werden dann die entsprechenden Wertepaare ausgelesen. Der Code ist für eine LiFePo4 Batterie mit 16 Zellen geschrieben. Bei Verwendung von Litium-Ionen Batterien kommen aufgrund der höheren Zellenspannung in der Regel weniger Zellen am SI zum Einsatz.  Da der Antwortstring je nach Zellenzahl unterschiedlich lang ist, verändert sich die Position der benötigten Werte. Die Adressen der Werte können aber anhand der Dokumentation des Protokolls (bms.protocol.v2.5.english.pdf) bestimmt werden. Entsprechend müssen dann die mit * kommentierten Zeilen angepasst werden.
 
-Zur Kontrolle werfen die ausgelesenen und verarbeiteten Werte ausgegeben, wenn SIinterJK diskret gestartet wird (nicht im Hintergrund).
+Zur Kontrolle werden die ausgelesenen und verarbeiteten Werte im Terminalfenster ausgegeben, wenn SIinterJK diskret gestartet wird (nicht im Hintergrund).
+Die Alarm- und Warnmeldungen des BMS werden an den SI nur als Warnungen gesendet, da die Batterien durch die BMS eigensicher sind, ist eine Abschaltung des SI bei Alarmen des BMS nicht sinnvoll.
 
 Anschließend werden die verarbeiteten Werte für die CAN-Ausgabe formatiert und abgeschickt.
 
+Abschließend wird der Puffer geleert, damit dieser bei abgeschaltetem SI nicht überläuft.
+Der gesamte Vorgang wird etwa alle 10s wiederholt. Bleiben am SI für 60s die Daten aus, schaltet sich dieser ab.
+### Start der Anwendung im Hintergrund
+
 ### Sehr hilfreiche Quellen:
-https://github.com/jblance/mpp-solar/issues/112 ab 18.05.21 werden hier die Befehle an das JK-BMS sowie das Antwortformat beschrieben.
+https://github.com/jblance/mpp-solar/issues/112  ab 18.05.21 werden hier die Befehle an das JK-BMS sowie das Antwortformat beschrieben. (besser als in der Originaldokumentation)
+https://github.com/camueller/SmartApplianceEnabler  Tolles Tool zum Messen und Schalten von Verbrauchern in Verbindung mit dem SMA Homemanager 2.0.

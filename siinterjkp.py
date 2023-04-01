@@ -4,7 +4,7 @@
 # JiKong Batteriemanagementsytemen mit JiKong RS485 Adapter.
 # Achtung! Dieser Code funktioniert mit 16-Zelligen LiFePo4 Akkus. Bei abweichender Zellenzahl müssen ab Z.43 die auszulesedenden Werte (mit * versehen)nach Anleitung der Schittstellenbeschreibung des BMS angepasst werden. (am Besten die Antwort vom BMS ausdrucken und auszählen)
 # 
-# Erstellt und zur feien Verfügung gestellt von Stephan Brabeck 
+# Version 1.1 erstellt und zur feien Verfügung gestellt von Stephan Brabeck am 31.3.2023
 # 
 # -*- coding:utf-8 -*-
 import RPi.GPIO as GPIO

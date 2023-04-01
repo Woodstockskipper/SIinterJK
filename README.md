@@ -11,11 +11,11 @@ Als Batterieumrichter benutze ich den Sunny Island 6.0 (SI) von SMA. Dieser besi
 Da das BMS von JK über eine RS485 Schnittstelle verfügt, die nicht mit dem CAN- Protokoll des SI interagiert, habe ich meine LiFePo4 Batterie im Modus für Bleibatterien am SI betrieben, was funktioniert, jedoch werden nur etwa 50% der Batteriekapazität genutzt. Bleibatterien haben einen relativ linearen Verlauf der Kapazität über der Spannung, wodurch der SI die Bleibatterie sehr gut managen kann und der SOC (State Of Charge) gut bestimmt wird. Da jedoch LiFePo4 Batterien über 85% ihrer Kapazität bei etwa 3,2V verharren, kommt es zu der fehlerhaften SOC Berechnung des SI und der eingeschränkten Kapazitätsnutzung.
 
 Daher reifte der Wunsch heran einen Adapter zwischen der RS485 Schnittstelle des JK BMS und dem CAN Anschluss des SI zu bauen, um die Möglichkeiten des SI voll zu nutzen.
-Meine letzten Programmiererfahrungen waren allerdings über 40 Jahre alt (Fortran, Pascal) und so habe ich mich mit Hilfe der Dokumentation des WaveShare HATs einigen Repositorys aus Github (siehe Verweise) und ChatGBT an Python versucht. Ich bitte daher zu entschuldigen, wenn der Code u.U. ein wenig holperig ist. Ich lade jeden ein Verbesserungen vorzuschlagen und ggf. eine kleine Oberfläche zu bauen um die Werte attraktiv z.B. per Browser darzustellen.
+Meine letzten Programmiererfahrungen waren allerdings über 40 Jahre alt (Fortran, Pascal) und so habe ich mich mit Hilfe der Dokumentation des WaveShare HATs, einigen Repositorys aus Github (siehe Verweise) und ChatGBT an Python versucht. Ich bitte daher zu entschuldigen, wenn der Code u.U. ein wenig holperig ist. Ich lade jeden ein Verbesserungen vorzuschlagen und ggf. eine kleine Oberfläche zu bauen um die Werte attraktiv z.B. per Browser darzustellen.
 ### Hardware
 Da ich ein wenig Vorkenntnisse im Betrieb von Raspberry Pi habe, lag es nahe den auch für diese Aufgabe zu verwenden. So besorgte ich mir einen Raspberry Pi 3B (2B, 3A und zero funktionieren ebenfalls), den RS485/CAN HAT von WaveShare und den passenden RS485 Adapter von JiKong, wobei bei letzterem darauf geachtet werden muss, dass dieser zum BMS Typ passt. Daher bei Bestellung unbedingt den BMS Typen angeben!
 
-Dann RS485 Adapter an den GPS-Anschluss des BMS anschließen (möglichst spannungsfrei, die Dinger sind sehr empfindlich!) Dann die gelbe Ader des freien Endes an Anschluss A des HATs und Die weiße Ader an Anschluss B des Hats.
+Dann RS485 Adapter an den GPS-Anschluss des BMS anschließen (möglichst spannungsfrei, die Dinger sind sehr empfindlich!) Dann die gelbe Ader des freien Endes an Anschluss A des HATs und die weiße Ader an Anschluss B des HATs.
 Anschließend die Adern 4 und 5 eines CAT5 Kabels mit RJ45 Stecker an CAN_H (4) und CAN_L (5) des HATs anschließen. Die Adern 3 und 6 mit einem 120 Ohm Widerstand terminieren. Siehe auch Datei "SMA CAN protocol(2).pdf".
 
 Anschließend den RJ45 Stecker in die entsprechende Buchse des SI einstecken.
@@ -47,8 +47,8 @@ sudo pip3 install RPi.GPIO
 sudo pip3 install smbus
 ```
 ### Software
-Im Code werden nach dem Laden der Libraries zunächst die Parameter der Schnittstellen definiertund anschließende die festen Parameter für den SI gesetzt. 
-Damit der SI möglichst nur kritische Fehler detektiert, die z.B. bei defektem BMS auftreten, setze ich den erlaubten Bereich für Spannungen und Ströme größer, gerade noch im unkritischen Bereich für die verwendeten Zellen, an als im BMS. Diese Werte setzen dann den äußeren Rahmen für die Arbeit des (der) BMS, welche(s) vollkommen unabhängig die Batterieblocks absichern. Der SI schaltet sich dann nur bei Abschaltung der Batterie durch das BMS oder Erreichen des unteren Entladegrenze ab.
+Im Code werden nach dem Laden der Libraries zunächst die Parameter der Schnittstellen definiert und anschließend die festen Parameter für den SI gesetzt. 
+Damit der SI möglichst nur kritische Fehler detektiert, die z.B. bei defektem BMS auftreten könnten, setze ich den erlaubten Bereich für Spannungen und Ströme größer, gerade noch im unkritischen Bereich für die verwendeten Zellen, an als im BMS. Diese Werte setzen dann den äußeren Rahmen für die Arbeit des (der) BMS, welche(s) vollkommen unabhängig die Batterieblocks absichern. Der SI schaltet sich dann nur bei Abschaltung der Batterie durch das BMS oder Erreichen des unteren Entladegrenze ab.
 Die maximalen Lade- und Entladeströme setze ich ebenfalls kleiner als der SI leistet und größer als im BMS eingestellt.
 
 Der Parameter "n" wird auf die Anzahl der ggf. parallel geschalteten Batterieblöcke gesetzt, da ja nur ein BMS ausgelesen wird. Ich nutze z.B. vier Batterieblöcke parallel, jedes mit einem eigenen BMS, lese jedoch nur ein BMS aus und multipliziere die Werte für Strom und Kapazität mit dem Faktor n=4. Dies hat sich bei gleicher Kapazität der Blöcke als ausreichend erwiesen.

@@ -47,7 +47,7 @@ sudo pip3 install RPi.GPIO
 sudo pip3 install smbus
 ```
 ### Software
-Im Code werden nach dem Laden der Libraries zunächst die Parameter der Schnittstellen definiert und anschließend die festen Parameter für den SI gesetzt. 
+Im Code SIinterJKp.py werden nach dem Laden der Libraries zunächst die Parameter der Schnittstellen definiert und anschließend die festen Parameter für den SI gesetzt. 
 Damit der SI möglichst nur kritische Fehler detektiert, die z.B. bei defektem BMS auftreten könnten, setze ich den erlaubten Bereich für Spannungen und Ströme größer, gerade noch im unkritischen Bereich für die verwendeten Zellen, an als im BMS. Diese Werte setzen dann den äußeren Rahmen für die Arbeit des (der) BMS, welche(s) vollkommen unabhängig die Batterieblocks absichern. Der SI schaltet sich dann nur bei Abschaltung der Batterie durch das BMS oder Erreichen des unteren Entladegrenze ab.
 Die maximalen Lade- und Entladeströme setze ich ebenfalls kleiner als der SI leistet und größer als im BMS eingestellt.
 
@@ -65,6 +65,39 @@ Anschließend werden die verarbeiteten Werte für die CAN-Ausgabe formatiert und
 Abschließend wird der Puffer geleert, damit dieser bei abgeschaltetem SI nicht überläuft.
 Der gesamte Vorgang wird etwa alle 10s wiederholt. Bleiben am SI für 60s die Daten aus, schaltet sich dieser ab.
 ### Start der Anwendung im Hintergrund
+Um sicherzustellen, dass der Code z.B. nach einem Blackout beim Hochfahren des Raspberry Pi automatisch ausgeführt wird und immer 
+im Hintergrund läuft, kann man einen Systemd-Service erstellen:
+Erstelle eine Datei mit dem Namen my_service.service im Verzeichnis /etc/systemd/system/:
+```
+sudo nano /etc/systemd/system/my_service.service
+```
+Füge den folgenden Inhalt in die my_service.service-Datei ein:
+```
+[Unit]
+Description=My Service
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/usr/bin/python /path/to/your/script.py
+Restart=always
+User=pi
+
+[Install]
+WantedBy=multi-user.target
+```
+Ersetze /path/to/your/script.py durch den Pfad zu SIinterJKp.py. Ich habe SIinterJKp z.B. unter: /home/pi/SIinterJK/SIinterJKp.py abgespeichert.
+Speichere und schließe die Datei.
+
+Aktiviere den Service dann mit dem folgenden Befehl:
+```
+sudo systemctl enable my_service.service
+```
+Starte anschließend den Service mit dem folgenden Befehl:
+```
+sudo systemctl start my_service.service
+```
+Jetzt wird SIinterJKp automatisch beim Hochfahren des Raspberry Pi gestartet und läuft im Hintergrund.
 
 ### Sehr hilfreiche Quellen:
 https://github.com/jblance/mpp-solar/issues/112  ab 18.05.21 werden hier die Befehle an das JK-BMS sowie das Antwortformat beschrieben. (besser als in der Originaldokumentation)

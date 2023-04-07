@@ -18,7 +18,7 @@ Da ich ein wenig Vorkenntnisse in der Anwendung von Raspberry Pi habe, lag es na
 Ich habe die JiKong Hardware JK-BD6A20S10P V10.X-W und die Software V10.05 und V10.09 getestet.
 
 Dann RS485 Adapter an den GPS-Anschluss des BMS anschließen (möglichst spannungsfrei, die Dinger sind sehr empfindlich!) Dann die gelbe Ader des freien Endes an Anschluss A des HATs und die weiße Ader an Anschluss B des HATs. (Die schwarze Ader bleibt unbelegt)
-Anschließend die Adern 4 und 5 eines CAT5 Kabels mit RJ45 Stecker an CAN_H (4) und CAN_L (5) des HATs anschließen. Die Adern 3 und 6 mit einem 120 Ohm Widerstand terminieren. Siehe auch Datei "SMA CAN protocol(2).pdf".
+Anschließend die Adern 4 und 5 eines CAT5 Kabels mit RJ45 Stecker an CAN_H (4) und CAN_L (5) des HATs anschließen. Die Adern 3 und 6 mit einem 120 Ohm Widerstand terminieren (verbinden). Siehe auch Datei "SMA CAN protocol(2).pdf".
 
 Anschließend den RJ45 Stecker in die entsprechende Buchse des SI einstecken.
 ### Einrichten des Raspberry Pi

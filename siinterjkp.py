@@ -144,7 +144,7 @@ while True:
 	#print ("abv=", abvh)	
 
 	abc = int(ibattd*n/10) 
-	 if abc < 0:
+	if abc < 0:
 		abc = 65536 + abc # Convert negative values to signed equivalent
 	abch = format(abc, '04X') # Aktueller Batteriestrom
 	#print ("abc=", abch)	

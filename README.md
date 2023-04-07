@@ -13,9 +13,11 @@ Da das BMS von JK über eine RS485 Schnittstelle verfügt, die nicht mit dem CAN
 Daher reifte der Wunsch heran einen Adapter zwischen der RS485 Schnittstelle des JK BMS und dem CAN Anschluss des SI zu bauen, um die Möglichkeiten des SI voll zu nutzen.
 Meine letzten Programmiererfahrungen waren allerdings über 40 Jahre alt (Fortran, Pascal) und so habe ich mich mit Hilfe der Dokumentation des WaveShare HATs, einigen Repositorys aus Github (siehe Verweise) und ChatGBT an Python versucht. Ich bitte daher zu entschuldigen, wenn der Code u.U. ein wenig holperig ist. Ich lade jeden ein Verbesserungen vorzuschlagen und ggf. eine kleine Oberfläche zu bauen um die Werte attraktiv z.B. per Browser darzustellen.
 ### Hardware
-Da ich ein wenig Vorkenntnisse im Betrieb von Raspberry Pi habe, lag es nahe den auch für diese Aufgabe zu verwenden. So besorgte ich mir einen Raspberry Pi 3B (2B, 3A und zero funktionieren ebenfalls), den RS485/CAN HAT von WaveShare und den passenden RS485 Adapter von JiKong, wobei bei letzterem darauf geachtet werden muss, dass dieser zum BMS Typ passt. Daher bei Bestellung unbedingt den BMS Typen angeben!
+Da ich ein wenig Vorkenntnisse in der Anwendung von Raspberry Pi habe, lag es nahe den auch für diese Aufgabe zu verwenden. So besorgte ich mir einen Raspberry Pi 3B (2B, 3A und zero funktionieren ebenfalls), den RS485/CAN HAT von WaveShare und den passenden RS485 Adapter von JiKong, wobei bei letzterem darauf geachtet werden muss, dass dieser zum BMS Typ passt. Daher bei Bestellung unbedingt den BMS Typen angeben!
 
-Dann RS485 Adapter an den GPS-Anschluss des BMS anschließen (möglichst spannungsfrei, die Dinger sind sehr empfindlich!) Dann die gelbe Ader des freien Endes an Anschluss A des HATs und die weiße Ader an Anschluss B des HATs.
+Ich habe die JiKong Hardware JK-BD6A20S10P V10.X-W und die Software V10.05 und V10.09 getestet.
+
+Dann RS485 Adapter an den GPS-Anschluss des BMS anschließen (möglichst spannungsfrei, die Dinger sind sehr empfindlich!) Dann die gelbe Ader des freien Endes an Anschluss A des HATs und die weiße Ader an Anschluss B des HATs. (Die schwarze Ader bleibt unbelegt)
 Anschließend die Adern 4 und 5 eines CAT5 Kabels mit RJ45 Stecker an CAN_H (4) und CAN_L (5) des HATs anschließen. Die Adern 3 und 6 mit einem 120 Ohm Widerstand terminieren. Siehe auch Datei "SMA CAN protocol(2).pdf".
 
 Anschließend den RJ45 Stecker in die entsprechende Buchse des SI einstecken.
@@ -31,21 +33,21 @@ enable_uart=1
 Nun kann die SD Karte in den Raspberry Pi geschoben werden und dieser gestartet werden.
 Mit SSH loggst Du Dich auf dem Raspberry Pi ein und installierst nun einige Bibliotheken:
 ```
-sudo -i
 cd
+sudo apt-get update
 sudo apt-get install python3-pip
-sudo pip3 install pillow
-sudo pip3 install numpy
 sudo apt-get install libopenjp2-7
 sudo apt install libtiff
 sudo apt install libtiff5
 sudo apt-get install libatlas-base-dev
-
-sudo apt-get update
 sudo apt-get install screen
+sudo python3 -m pip install pyserial
+sudo pip3 install pillow
+sudo pip3 install numpy
 sudo pip3 install python-can
 sudo pip3 install RPi.GPIO
 sudo pip3 install smbus
+sudo apt-get update
 ```
 ### Software
 Im Code SIinterJKp.py werden nach dem Laden der Libraries zunächst die Parameter der Schnittstellen definiert und anschließend die festen Parameter für den SI gesetzt. 
@@ -68,9 +70,9 @@ Der gesamte Vorgang wird etwa alle 10s wiederholt. Bleiben am SI für 60s die Da
 
 Ich habe "SIinterJKb.py" in einem eigenen Verzeichnis unter dem Benutzer "pi" abgelegt: /home/pi/SIinterJK/SIinterJKp.py
 
-Die Anwendung wird dann mit dem Befehl: 
+Die Anwendung wird dann nach dem Wechsel is richtige Verzeichnis mit dem Befehl: 
 ```
-sudo python SIinterJKp.py
+sudo python3 SIinterJKp.py
 ```
 gestartet.
 
@@ -93,7 +95,7 @@ After=multi-user.target
 
 [Service]
 Type=idle
-ExecStart=/usr/bin/python /path/to/your/script.py
+ExecStart=/usr/bin/python3 /path/to/your/script.py
 Restart=always
 User=pi
 

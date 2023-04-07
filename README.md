@@ -74,11 +74,11 @@ Anschließend werden die verarbeiteten Werte für die CAN-Ausgabe formatiert und
 Abschließend wird der Puffer geleert, damit dieser bei abgeschaltetem SI nicht überläuft.
 Der gesamte Vorgang wird etwa alle 10s wiederholt. Bleiben am SI für 60s die Daten aus, schaltet sich dieser ab.
 
-Ich habe "SIinterJKb.py" in einem eigenen Verzeichnis unter dem Benutzer "pi" abgelegt: /home/pi/SIinterJK/SIinterJKp.py
+Ich habe "siinterjkb.py" in einem eigenen Verzeichnis unter dem Benutzer "pi" abgelegt: /home/pi/SIinterJK/siinterjkp.py
 
 Die Anwendung wird dann nach dem Wechsel is richtige Verzeichnis mit dem Befehl: 
 ```
-sudo python3 SIinterJKp.py
+sudo python3 siinterjkp.py
 ```
 gestartet.
 
@@ -108,7 +108,7 @@ User=pi
 [Install]
 WantedBy=multi-user.target
 ```
-Ersetze /path/to/your/script.py durch den Pfad zu SIinterJKp.py. Ich habe SIinterJKp z.B. unter: /home/pi/SIinterJK/SIinterJKp.py abgespeichert.
+Ersetze /path/to/your/script.py durch den Pfad zu siinterjkp.py. Ich habe siinterjkp z.B. unter: /home/pi/SIinterJK/siinterjkp.py abgespeichert.
 Speichere und schließe die Datei.
 
 Aktiviere den Service dann mit dem folgenden Befehl:

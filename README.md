@@ -31,6 +31,7 @@ enable_uart=1
 Nun kann die SD Karte in den Raspberry Pi geschoben werden und dieser gestartet werden.
 Mit SSH loggst Du Dich auf dem Raspberry Pi ein und installierst nun einige Bibliotheken:
 ```
+sudo -i
 cd
 sudo apt-get install python3-pip
 sudo pip3 install pillow
@@ -48,12 +49,12 @@ sudo pip3 install smbus
 ```
 ### Software
 Im Code SIinterJKp.py werden nach dem Laden der Libraries zunächst die Parameter der Schnittstellen definiert und anschließend die festen Parameter für den SI gesetzt. 
-Damit der SI möglichst nur kritische Fehler detektiert, die z.B. bei defektem BMS auftreten könnten, setze ich den erlaubten Bereich für Spannungen und Ströme größer, gerade noch im unkritischen Bereich für die verwendeten Zellen, an als im BMS. Diese Werte setzen dann den äußeren Rahmen für die Arbeit des (der) BMS, welche(s) vollkommen unabhängig die Batterieblocks absichern. Der SI schaltet sich dann nur bei Abschaltung der Batterie durch das BMS oder Erreichen des unteren Entladegrenze ab.
-Die maximalen Lade- und Entladeströme setze ich ebenfalls kleiner als der SI leistet und größer als im BMS eingestellt.
+Damit der SI möglichst nur kritische Fehler detektiert, die z.B. bei defektem BMS auftreten könnten, setze ich den erlaubten Bereich für Spannungen und Ströme größer, gerade noch im unkritischen Bereich für die verwendeten Zellen, an, als im BMS eingestellt. Diese Werte setzen dann den äußeren Rahmen für die Arbeit des (der) BMS, welche(s) vollkommen unabhängig die Batterieblocks absichern. Der SI schaltet sich dann nur bei Abschaltung der Batterie durch das BMS oder Erreichen des unteren Entladegrenze ab.
+Die maximalen Lade- und Entladeströme setze ich ebenfalls kleiner an als SI und Batterie leisten können und größer als im BMS eingestellt.
 
 Der Parameter "n" wird auf die Anzahl der ggf. parallel geschalteten Batterieblöcke gesetzt, da ja nur ein BMS ausgelesen wird. Ich nutze z.B. vier Batterieblöcke parallel, jedes mit einem eigenen BMS, lese jedoch nur ein BMS aus und multipliziere die Werte für Strom und Kapazität mit dem Faktor n=4. Dies hat sich bei gleicher Kapazität der Blöcke als ausreichend erwiesen.
 
-Der State Of Health (SOH) wird vom JK-BMS nicht ermittelt und wird fest auf 100% festgesetzt.
+Der State Of Health (SOH) wird vom JK-BMS nicht ermittelt und wird daher auf 100% fest eingestellt.
 
 Im nächsten Schritt werden die Daten vom BMS angefordert. Aus dem daraufhin emfangenen Hex String werden dann die entsprechenden Wertepaare ausgelesen. Der Code ist für eine LiFePo4 Batterie mit 16 Zellen geschrieben. Bei Verwendung von Litium-Ionen Batterien kommen aufgrund der höheren Zellenspannung in der Regel weniger Zellen am SI zum Einsatz.  Da der Antwortstring je nach Zellenzahl unterschiedlich lang ist, verändert sich die Position der benötigten Werte. Die Adressen der Werte können aber anhand der Dokumentation des Protokolls (bms.protocol.v2.5.english.pdf) bestimmt werden. Entsprechend müssen dann die mit * kommentierten Zeilen angepasst werden.
 
@@ -64,6 +65,19 @@ Anschließend werden die verarbeiteten Werte für die CAN-Ausgabe formatiert und
 
 Abschließend wird der Puffer geleert, damit dieser bei abgeschaltetem SI nicht überläuft.
 Der gesamte Vorgang wird etwa alle 10s wiederholt. Bleiben am SI für 60s die Daten aus, schaltet sich dieser ab.
+
+Ich habe "SIinterJKb.py" in einem eigenen Verzeichnis unter dem Benutzer "pi" abgelegt: /home/pi/SIinterJK/SIinterJKp.py
+
+Die Anwendung wird dann mit dem Befehl: 
+```
+sudo python SIinterJKp.py
+```
+gestartet.
+
+Im Terminalfenster kann man dann die aktuell vom BMS empfangenen Werte und die an den CAN Bus ausgegebenen Strings verfolgen.
+Bei eigenen Anpassungen des Codes kann man hier sehen, ob die Änderungen zum korrekten Ergebnis führen.
+
+Falls jemand eine Idee hat, wie man sich diese Informationen über ein lokales Netzwerk in einem Browser anzeigen lassen kann, so ist er herzlich eingeladen den Code entsprechend zu erweitern und das Ergebnis hier zu teilen.
 ### Start der Anwendung im Hintergrund
 Um sicherzustellen, dass der Code z.B. nach einem Blackout beim Hochfahren des Raspberry Pi automatisch ausgeführt wird und immer 
 im Hintergrund läuft, kann man einen Systemd-Service erstellen:
@@ -100,6 +114,6 @@ sudo systemctl start my_service.service
 Jetzt wird SIinterJKp automatisch beim Hochfahren des Raspberry Pi gestartet und läuft im Hintergrund.
 
 ### Sehr hilfreiche Quellen:
-https://github.com/jblance/mpp-solar/issues/112  ab 18.05.21 werden hier die Befehle an das JK-BMS sowie das Antwortformat beschrieben. (besser als in der Originaldokumentation)
+https://github.com/jblance/mpp-solar/issues/112  ab Eintrag vom 18.05.21 werden hier die Befehle an das JK-BMS sowie das Antwortformat beschrieben. (besser als in der Originaldokumentation)
 
 https://github.com/camueller/SmartApplianceEnabler  Tolles Tool zum Messen und Schalten von Verbrauchern in Verbindung mit dem SMA Homemanager 2.0.

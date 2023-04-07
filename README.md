@@ -49,6 +49,12 @@ sudo pip3 install RPi.GPIO
 sudo pip3 install smbus
 sudo apt-get update
 ```
+In einem letzten Schritt muss noch das Konfigurationsmenü angepasst werden:
+```
+sudo raspi-config
+```
+Dann Interface Optionen wählen -> Serial -> no -> yes ->
+Damit ist der Raspberry Pi fertig für die Installation der Software
 ### Software
 Im Code SIinterJKp.py werden nach dem Laden der Libraries zunächst die Parameter der Schnittstellen definiert und anschließend die festen Parameter für den SI gesetzt. 
 Damit der SI möglichst nur kritische Fehler detektiert, die z.B. bei defektem BMS auftreten könnten, setze ich den erlaubten Bereich für Spannungen und Ströme größer, gerade noch im unkritischen Bereich für die verwendeten Zellen, an, als im BMS eingestellt. Diese Werte setzen dann den äußeren Rahmen für die Arbeit des (der) BMS, welche(s) vollkommen unabhängig die Batterieblocks absichern. Der SI schaltet sich dann nur bei Abschaltung der Batterie durch das BMS oder Erreichen des unteren Entladegrenze ab.

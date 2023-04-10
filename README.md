@@ -1,5 +1,7 @@
 # SIinterJK
-## Interface zur Übertragung der Batteriedaten vom JiKong-BMS (RS485) zum SMA Sunny Island 6.0 (CAN)
+## Interface zur Übertragung der Batteriedaten vom JiKong-BMS (RS485) zum SMA Sunny Island 6.0 (CAN)         
+
+[English Version](READMEengl.md)
 ### Vorgeschichte
 Seit etwa einem Jahr besitze ich eine selbst gebaute LiFePo4 Batterie zur Zwischenspeicherung meiner PV-Energie. Die Batterie besteht aus vier parallel geschalteten Blöcken mit je 7 kWh Kapazität. Jeder Block von 16 in Reihe geschalteten 3,2V Zellen wird mit einem Batteriemanagementsystem (BMS), Typ JiKong BD6A20S-10P, überwacht und aktiv balanciert.
 
@@ -18,7 +20,7 @@ Da ich ein wenig Vorkenntnisse in der Anwendung von Raspberry Pi habe, lag es na
 Ich habe die JiKong Hardware JK-BD6A20S10P V10.X-W und die Software V10.05 und V10.09 getestet.
 
 Dann RS485 Adapter an den GPS-Anschluss des BMS anschließen (möglichst spannungsfrei, die Dinger sind sehr empfindlich!) Dann die gelbe Ader des freien Endes an Anschluss A des HATs und die weiße Ader an Anschluss B des HATs. (Die schwarze Ader bleibt unbelegt)
-Anschließend die Adern 4 und 5 eines CAT5 Kabels mit RJ45 Stecker an CAN_H (4) und CAN_L (5) des HATs anschließen. Die Adern 3 und 6 mit einem 120 Ohm Widerstand terminieren (verbinden). Siehe auch Datei "SMA CAN protocol(2).pdf".
+Anschließend die Adern 4 und 5 eines CAT5 Kabels mit RJ45 Stecker an CAN_H (4) und CAN_L (5) des HATs anschließen. Die Adern 3 und 6 mit einem 120 Ohm Widerstand terminieren (verbinden). Siehe auch die [SMA-CAN-Doku](SMA CAN protocol(2).pdf).
 
 Anschließend den RJ45 Stecker in die entsprechende Buchse des SI einstecken.
 ### Einrichten des Raspberry Pi
@@ -56,7 +58,7 @@ sudo raspi-config
 Dann Interface Optionen wählen -> Serial -> no -> yes ->
 Damit ist der Raspberry Pi fertig für die Installation der Software
 ### Software
-Im Code SIinterJKp.py werden nach dem Laden der Libraries zunächst die Parameter der Schnittstellen definiert und anschließend die festen Parameter für den SI gesetzt. 
+Im Code siinterjkp.py werden nach dem Laden der Libraries zunächst die Parameter der Schnittstellen definiert und anschließend die festen Parameter für den SI gesetzt. 
 Damit der SI möglichst nur kritische Fehler detektiert, die z.B. bei defektem BMS auftreten könnten, setze ich den erlaubten Bereich für Spannungen und Ströme größer, gerade noch im unkritischen Bereich für die verwendeten Zellen, an, als im BMS eingestellt. Diese Werte setzen dann den äußeren Rahmen für die Arbeit des (der) BMS, welche(s) vollkommen unabhängig die Batterieblocks absichern. Der SI schaltet sich dann nur bei Abschaltung der Batterie durch das BMS oder Erreichen des unteren Entladegrenze ab.
 Die maximalen Lade- und Entladeströme setze ich ebenfalls kleiner an als SI und Batterie leisten können und größer als im BMS eingestellt.
 

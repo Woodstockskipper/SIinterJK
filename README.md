@@ -124,6 +124,11 @@ sudo systemctl start my_service.service
 Jetzt wird SIinterJKp automatisch beim Hochfahren des Raspberry Pi gestartet und läuft im Hintergrund.
 
 ### Sehr hilfreiche Quellen:
-https://github.com/jblance/mpp-solar/issues/112  ab Eintrag vom 18.05.21 werden hier die Befehle an das JK-BMS sowie das Antwortformat beschrieben. (besser als in der Originaldokumentation)
+https://github.com/jblance/mpp-solar/issues/112  ab Eintrag vom 18.05.21 und
 
-https://github.com/camueller/SmartApplianceEnabler  Tolles Tool zum Messen und Schalten von Verbrauchern in Verbindung mit dem SMA Homemanager 2.0.
+https://github.com/syssi/esphome-jk-bms/blob/c97b660e4005b8f79eb98ed89ee14b25598875b1/docs/protocol-design.md
+
+Hier werden die Befehle an das JK-BMS sowie das Antwortformat beschrieben. (besser als in der Originaldokumentation)
+
+https://github.com/camueller/SmartApplianceEnabler 
+Tolles Tool zum Messen und Schalten von Verbrauchern in Verbindung mit dem SMA Homemanager 2.0.

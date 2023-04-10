@@ -1,5 +1,6 @@
 # SIinterJK
 ## Interface for transmission of battery data from JiKong BMS (RS485) to SMA Sunny Island 6.0 (CAN)
+[German version](README.md)
 ### Introduction
 For about a year I have owned a self-built LiFePo4 battery for intermediate storage of my PV energy. The battery consists of four blocks connected in parallel, each with 7 kWh capacity. Each block of 16 series-connected 3.2V cells is monitored and actively balanced with a battery management system (BMS), type JiKong BD6A20S-10P.
 
@@ -18,7 +19,7 @@ Since I have some knowledge in using Raspberry Pi, it was obvious to use it for 
 I tested the JiKong hardware JK-BD6A20S10P V10.X-W and the software V10.05 and V10.09.
 
 Having the parts in hand, connect the RS485 adapter to the GPS connector of the BMS (as voltage free as possible, these things are very sensitive!) Then connect the yellow wire of the free end to connector A of the HAT and the white wire to connector B of the HAT. (The black wire remains unused)
-Then connect wires 4 and 5 of a CAT5 cable with RJ45 connector to CAN_H (4) and CAN_L (5) of the HAT. Terminate (connect) the wires 3 and 6 with a 120 Ohm resistor. See also file "SMA CAN protocol(2).pdf".
+Then connect wires 4 and 5 of a CAT5 cable with RJ45 connector to CAN_H (4) and CAN_L (5) of the HAT. Terminate (connect) the wires 3 and 6 with a 120 Ohm resistor. See also the [SMA-CAN documentation](sma%20can%20protocol%20(2).pdf).
 
 Then plug the RJ45 connector into the corresponding socket of the SI.
 ### Setting up the Raspberry Pi
@@ -63,7 +64,7 @@ The parameter "n" is set to the number of battery blocks connected in parallel, 
 
 The State Of Health (SOH) is not determined by the JK-BMS and is therefore fixed at 100%.
 
-In the next lines, the data is requested from the BMS. The corresponding value pairs are then read from the hex string received. The code is written for a LiFePo4 battery with 16 cells. When using lithium-ion batteries, fewer cells are usually used on the SI due to the higher cell voltage.  Since the response string varies in length depending on the number of cells, the position of the required values changes. However, the addresses of the values can be determined from the documentation of the protocol (bms.protocol.v2.5.english.pdf). The lines commented with * must then be adapted accordingly.
+In the next lines, the data is requested from the BMS. The corresponding value pairs are then read from the hex string received. The code is written for a LiFePo4 battery with 16 cells. When using lithium-ion batteries, fewer cells are usually used on the SI due to the higher cell voltage.  Since the response string varies in length depending on the number of cells, the position of the required values changes. However, the addresses of the values can be determined from the documentation of the [BMS Protokoll description](bms.protocol.v2.5.english.pdf). The lines commented with * must then be adapted accordingly.
 
 For control purposes, the read and processed values are output in the terminal window when SIinterJK is started discretely (not in the background).
 The alarm and warning messages of the BMS are sent to the SI only as warnings, since the batteries are intrinsically safe by the BMS, it does not make sense to switch off the SI when alarms of the BMS occur.

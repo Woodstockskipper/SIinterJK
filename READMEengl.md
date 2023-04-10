@@ -1,6 +1,6 @@
 # SIinterJK
 ## Interface for transmission of battery data from JiKong BMS (RS485) to SMA Sunny Island 6.0 (CAN)
-### Prehistory
+### Introduction
 For about a year I have owned a self-built LiFePo4 battery for intermediate storage of my PV energy. The battery consists of four blocks connected in parallel, each with 7 kWh capacity. Each block of 16 series-connected 3.2V cells is monitored and actively balanced with a battery management system (BMS), type JiKong BD6A20S-10P.
 
 I use the Sunny Island 6.0 (SI) from SMA as the battery inverter. This has two operating modes: 

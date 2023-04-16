@@ -17,11 +17,18 @@ Meine letzten Programmiererfahrungen waren allerdings über 40 Jahre alt (Fortra
 ### Hardware
 Da ich ein wenig Vorkenntnisse in der Anwendung von Raspberry Pi habe, lag es nahe den auch für diese Aufgabe zu verwenden. So besorgte ich mir einen Raspberry Pi 3B (2B, 3A und zero funktionieren ebenfalls), den RS485/CAN HAT von WaveShare und den passenden RS485 Adapter von JiKong, wobei bei letzterem darauf geachtet werden muss, dass dieser zum BMS Typ passt. Daher bei Bestellung unbedingt den BMS Typen angeben.
  
-![Raspberry Zerro with RS485/CAN Hat, step down voltage regulator and JK RS485 Adapter](/Docs/2023-04-16 11.31.02.jpg)
+![Raspberry Zerro with RS485/CAN Hat, step down voltage regulator and JK RS485 Adapter](/Docs/2023-04-16%2011.31.02.jpg)
 
 Ich habe die JiKong Hardware JK-BD6A20S10P V10.X-W und die Software V10.05 und V10.09 getestet.
 
-Dann RS485 Adapter an den GPS-Anschluss des BMS anschließen (möglichst spannungsfrei, die Dinger sind sehr empfindlich!) Dann die gelbe Ader des freien Endes an Anschluss A des HATs und die weiße Ader an Anschluss B des HATs. (Die schwarze Ader bleibt unbelegt)
+Dann RS485 Adapter an den GPS-Anschluss des BMS anschließen (möglichst spannungsfrei, die Dinger sind sehr empfindlich!) 
+
+![GPS Port of JK BMS with Adapter connected](/Docs/2023-04-16%2011.31.19.jpg)
+
+Dann die gelbe Ader des freien Endes an Anschluss A des HATs und die weiße Ader an Anschluss B des HATs. (Die schwarze Ader bleibt unbelegt)
+
+![RS485/CAN Hat with adapter cable connected](/Docs/2023-04-16%2011.27.28.jpg)
+
 Anschließend die Adern 4 und 5 eines CAT5 Kabels mit RJ45 Stecker an CAN_H (4) und CAN_L (5) des HATs anschließen. Die Adern 3 und 6 mit einem 120 Ohm Widerstand terminieren (verbinden). Siehe auch die [SMA-CAN-Doku](/Docs/sma%20can%20protocol%20(2).pdf).
 
 Anschließend den RJ45 Stecker in die entsprechende Buchse des SI einstecken.

@@ -20,7 +20,7 @@ Da ich ein wenig Vorkenntnisse in der Anwendung von Raspberry Pi habe, lag es na
 Ich habe die JiKong Hardware JK-BD6A20S10P V10.X-W und die Software V10.05 und V10.09 getestet.
 
 Dann RS485 Adapter an den GPS-Anschluss des BMS anschließen (möglichst spannungsfrei, die Dinger sind sehr empfindlich!) Dann die gelbe Ader des freien Endes an Anschluss A des HATs und die weiße Ader an Anschluss B des HATs. (Die schwarze Ader bleibt unbelegt)
-Anschließend die Adern 4 und 5 eines CAT5 Kabels mit RJ45 Stecker an CAN_H (4) und CAN_L (5) des HATs anschließen. Die Adern 3 und 6 mit einem 120 Ohm Widerstand terminieren (verbinden). Siehe auch die [SMA-CAN-Doku](sma%20can%20protocol%20(2).pdf).
+Anschließend die Adern 4 und 5 eines CAT5 Kabels mit RJ45 Stecker an CAN_H (4) und CAN_L (5) des HATs anschließen. Die Adern 3 und 6 mit einem 120 Ohm Widerstand terminieren (verbinden). Siehe auch die [SMA-CAN-Doku](/Docs/sma%20can%20protocol%20(2).pdf).
 
 Anschließend den RJ45 Stecker in die entsprechende Buchse des SI einstecken.
 ### Einrichten des Raspberry Pi
@@ -66,7 +66,7 @@ Der Parameter "n" wird auf die Anzahl der ggf. parallel geschalteten Batteriebl�
 
 Der State Of Health (SOH) wird vom JK-BMS nicht ermittelt und wird daher auf 100% fest eingestellt.
 
-Im nächsten Schritt werden die Daten vom BMS angefordert. Aus dem daraufhin emfangenen Hex String werden dann die entsprechenden Wertepaare ausgelesen. Der Code ist für eine LiFePo4 Batterie mit 16 Zellen geschrieben. Bei Verwendung von Litium-Ionen Batterien kommen aufgrund der höheren Zellenspannung in der Regel weniger Zellen am SI zum Einsatz.  Da der Antwortstring je nach Zellenzahl unterschiedlich lang ist, verändert sich die Position der benötigten Werte. Die Adressen der Werte können aber anhand der Dokumentation des [BMS-Protokolls](bms.protocol.v2.5.english.pdf) bestimmt werden. Entsprechend müssen dann die mit * kommentierten Zeilen angepasst werden.
+Im nächsten Schritt werden die Daten vom BMS angefordert. Aus dem daraufhin emfangenen Hex String werden dann die entsprechenden Wertepaare ausgelesen. Der Code ist für eine LiFePo4 Batterie mit 16 Zellen geschrieben. Bei Verwendung von Litium-Ionen Batterien kommen aufgrund der höheren Zellenspannung in der Regel weniger Zellen am SI zum Einsatz.  Da der Antwortstring je nach Zellenzahl unterschiedlich lang ist, verändert sich die Position der benötigten Werte. Die Adressen der Werte können aber anhand der Dokumentation des [BMS-Protokolls](/Docs/bms.protocol.v2.5.english.pdf) bestimmt werden. Entsprechend müssen dann die mit * kommentierten Zeilen angepasst werden.
 
 Zur Kontrolle werden die ausgelesenen und verarbeiteten Werte im Terminalfenster ausgegeben, wenn SIinterJK diskret gestartet wird (nicht im Hintergrund).
 Die Alarm- und Warnmeldungen des BMS werden an den SI nur als Warnungen gesendet, da die Batterien durch die BMS eigensicher sind, ist eine Abschaltung des SI bei Alarmen des BMS nicht sinnvoll.
@@ -132,3 +132,9 @@ Hier werden die Befehle an das JK-BMS sowie das Antwortformat beschrieben. (bess
 
 https://github.com/camueller/SmartApplianceEnabler 
 Tolles Tool zum Messen und Schalten von Verbrauchern in Verbindung mit dem SMA Homemanager 2.0.
+
+Ich wünsche Euch viel Erfolg bei Euren Batterie-Speicherprojekten!
+
+Lüneburg, den 8. April 2023
+
+Stephan Brabeck

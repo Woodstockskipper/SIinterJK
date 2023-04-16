@@ -15,8 +15,8 @@ Da das BMS von JK über eine RS485 Schnittstelle verfügt, die nicht mit dem CAN
 Daher reifte der Wunsch heran einen Adapter zwischen der RS485 Schnittstelle des JK BMS und dem CAN Anschluss des SI zu bauen, um die Möglichkeiten des SI voll zu nutzen.
 Meine letzten Programmiererfahrungen waren allerdings über 40 Jahre alt (Fortran, Pascal) und so habe ich mich mit Hilfe der Dokumentation des WaveShare HATs, einigen Repositorys aus Github (siehe Verweise) und ChatGBT an Python versucht. Ich bitte daher zu entschuldigen, wenn der Code u.U. ein wenig holperig ist. Ich lade jeden ein Verbesserungen vorzuschlagen und ggf. eine kleine Oberfläche zu bauen um die Werte attraktiv z.B. per Browser darzustellen.
 ### Hardware
-Da ich ein wenig Vorkenntnisse in der Anwendung von Raspberry Pi habe, lag es nahe den auch für diese Aufgabe zu verwenden. So besorgte ich mir einen Raspberry Pi 3B (2B, 3A und zero funktionieren ebenfalls), den RS485/CAN HAT von WaveShare und den passenden RS485 Adapter von JiKong, wobei bei letzterem darauf geachtet werden muss, dass dieser zum BMS Typ passt. Daher bei Bestellung unbedingt den BMS Typen angeben!
-
+Da ich ein wenig Vorkenntnisse in der Anwendung von Raspberry Pi habe, lag es nahe den auch für diese Aufgabe zu verwenden. So besorgte ich mir einen Raspberry Pi 3B (2B, 3A und zero funktionieren ebenfalls), den RS485/CAN HAT von WaveShare und den passenden RS485 Adapter von JiKong, wobei bei letzterem darauf geachtet werden muss, dass dieser zum BMS Typ passt. Daher bei Bestellung unbedingt den BMS Typen angeben.
+ 
 ![Raspberry Zerro with RS485/CAN Hat, step down voltage regulator and JK RS485 Adapter](/Docs/2023-04-16 11.31.02.jpg)
 
 Ich habe die JiKong Hardware JK-BD6A20S10P V10.X-W und die Software V10.05 und V10.09 getestet.

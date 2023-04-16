@@ -1,3 +1,5 @@
+# SIinterJK  Version 1.1 vom 16.04.2023
+#
 # Programm zur Übersetzung der von JK BMS über RS485 gesendeten Zustandsinformationen an die 
 # CAN-Bus Schnittstelle des SMA Sunny Island 6.0 und 8.0 (getestet).
 # Funktioniert mit RaspberryPi 2B aufwärts, WaveShare CAN/RS485 Hat und 
@@ -22,7 +24,9 @@ GPIO.setup(EN_485,GPIO.OUT)
 GPIO.output(EN_485,GPIO.HIGH)
 t = serial.Serial("/dev/ttyS0",115200)    #RS485 Schnittstelle definieren
 
+os.system('sudo ifconfig can0 down')
 os.system('sudo ip link set can0 type can bitrate 500000') # Siehe Schnittstellenbeschreibung des SMA Sunny Island
+os.system("sudo ip link set can0 txqueuelen 1000") # CAN Buffer vergrößern
 os.system('sudo ifconfig can0 up')
 can0 = can.interface.Bus(channel = 'can0', bustype = 'socketcan')# socketcan_native CAN Schnittstelle definieren
 can0.flush_tx_buffer() # CAN socket buffer leeren
@@ -215,7 +219,5 @@ while True:
 	
 	GPIO.cleanup() # Puffer leeren
 	print ("\033c") #Bildschirm leeren
-
-# os.system('sudo ifconfig can0 down')
 # Ende
 

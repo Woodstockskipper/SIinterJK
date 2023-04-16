@@ -85,7 +85,7 @@ Anschließend werden die verarbeiteten Werte für die CAN-Ausgabe formatiert und
 Abschließend wird der Puffer geleert, damit dieser bei abgeschaltetem SI nicht überläuft.
 Der gesamte Vorgang wird etwa alle 10s wiederholt. Bleiben am SI für 60s die Daten aus, schaltet sich dieser ab.
 
-Ich habe "siinterjkb.py" in einem eigenen Verzeichnis unter dem Benutzer "pi" abgelegt: /home/pi/SIinterJK/siinterjkp.py
+Ich habe "siinterjkp.py" in einem eigenen Verzeichnis unter dem Benutzer "pi" abgelegt: /home/pi/SIinterJK/siinterjkp.py
 
 Die Anwendung wird dann nach dem Wechsel is richtige Verzeichnis mit dem Befehl: 
 ```

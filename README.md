@@ -63,7 +63,8 @@ In einem letzten Schritt muss noch das Konfigurationsmenü angepasst werden:
 ```
 sudo raspi-config
 ```
-Dann Interface Optionen wählen -> Serial -> no -> yes ->
+Dann Interface Optionen wählen -> Serial -> no -> yes -> ok
+
 Damit ist der Raspberry Pi fertig für die Installation der Software
 ### Software
 Im Code siinterjkp.py werden nach dem Laden der Libraries zunächst die Parameter der Schnittstellen definiert und anschließend die festen Parameter für den SI gesetzt. 

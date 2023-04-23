@@ -48,7 +48,6 @@ cd
 sudo apt-get update
 sudo apt-get install python3-pip
 sudo apt-get install libopenjp2-7
-sudo apt install libtiff
 sudo apt install libtiff5
 sudo apt-get install libatlas-base-dev
 sudo apt-get install screen

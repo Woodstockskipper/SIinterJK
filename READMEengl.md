@@ -88,7 +88,7 @@ If someone has an idea how to display this information over a local network in a
 ### Starting the application in the background
 To make sure that the code is automatically executed, e.g. after a blackout, when the Raspberry Pi is booted and always 
 runs in the background, you can create a systemd service:
-Create a file named my_service.service in the /etc/system/system/ directory:
+Create a file named my_service.service in the /etc/systemd/system/ directory:
 ```
 sudo nano /etc/systemd/system/my_service.service
 ```

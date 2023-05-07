@@ -23,6 +23,7 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(EN_485,GPIO.OUT) 
 GPIO.output(EN_485,GPIO.HIGH)
 t = serial.Serial("/dev/ttyS0",115200)    #RS485 Schnittstelle definieren
+#t = serial.Serial("/dev/ttyAMA0",115200) #RS485 Schnittstelle für Raspberry Pi 2B definieren
 
 os.system('sudo ifconfig can0 down')
 os.system('sudo ip link set can0 type can bitrate 500000') # Siehe Schnittstellenbeschreibung des SMA Sunny Island

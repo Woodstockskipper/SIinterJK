@@ -54,7 +54,7 @@ In a last step you have to change the Raspi Configuration:
 ```
 sudo raspi-config
 ```
-Choose Interfaces Options -> Serial-> no -> yes ->
+Choose Interfaces Options -> Serial-> no -> yes -> ok.
 ### Software
 In the code siinterjkp.py, after loading the libraries, first the parameters of the interfaces are defined and then the fixed parameters for the SI are set:
 To make sure that the SI detects only critical errors, which could occur if the BMS is defective, I set the allowed range for voltages and currents larger, just in the uncritical range for the used cells, than set in the BMS. These values then set the outer frame for the work of the BMS(s), which completely independently protect the battery block(s). The SI then only shuts down when the battery is disconnected by the BMS or reaches the lower discharge limit.

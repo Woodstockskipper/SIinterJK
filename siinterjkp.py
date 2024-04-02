@@ -89,7 +89,7 @@ while True:
 	socd = struct.unpack('<B', soc)
 	# Abfangroutine für fehlerhaften SOC
 	if ubattd[0] < 4600 and socd[0] > 20:
-		socd[0] = (10, 0) #SOC auf 10% bei 46V setzen
+		socd = (10, 0) #SOC auf 10% bei 46V setzen
 	print ("       SOC = ", socd[0],"%")
 
 	#Warnungen auslesen

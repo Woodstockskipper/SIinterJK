@@ -1,4 +1,4 @@
-# SIinterJK  Version 1.1 vom 16.04.2023
+# SIinterJK  Version 1.2 vom 2.04.2024
 #
 # Programm zur Übersetzung der von JK BMS über RS485 gesendeten Zustandsinformationen an die 
 # CAN-Bus Schnittstelle des SMA Sunny Island 6.0 und 8.0 (getestet).
@@ -7,7 +7,8 @@
 # Achtung! Dieser Code funktioniert mit 16-Zelligen LiFePo4 Akkus. Bei abweichender Zellenzahl müssen ab Z.43 die auszulesedenden Werte (mit * versehen)nach Anleitung der Schittstellenbeschreibung des BMS angepasst werden. (am Besten die Antwort vom BMS ausdrucken und auszählen)
 # 
 # Version 1.1 erstellt und zur feien Verfügung gestellt von Stephan Brabeck am 31.3.2023
-# 
+# Version 1.2 enthält eine Abfangroutine die bei gravierenden Abweichungen zwischen Spannung und Ladezustand dazu führt, dass der Ladezustand zurückgesetzt wird.
+#
 # -*- coding:utf-8 -*-
 import RPi.GPIO as GPIO
 import serial
@@ -36,7 +37,7 @@ can0.flush_tx_buffer() # CAN socket buffer leeren
 bcv = 550 # set Battery charge voltage to 55V /0,1
 dccl = 1150 # set DC charge current limitation to 115A /0,1
 ddcl = 1150 # set DC discharge current limitation to 115A /0,1
-bdv = 450 # set min. Battery discharge voltage to 45,0V /0,1
+bdv = 432 # set min. Battery discharge voltage to 43,2V /0,1
 n = 1 # Anzahl der parallel geschalteten Batterien / BMS wenn nur ein BMS ausgelesen wird.
 # SOH wird weiter unten immer auf 100% gesetzt.
 # Damit der SI möglichst wenig Fehler detektiert, setze ich den erlaubten Bereich für Spannungen und Ströme größer (gerade noch im erlaubten Bereich)an als im BMS.
@@ -86,6 +87,9 @@ while True:
 	# SOC auslesen
 	soc = stri[77:78] # *
 	socd = struct.unpack('<B', soc)
+	# Abfangroutine für fehlerhaften SOC
+	if ubattd[0] < 4600 and socd[0] > 20:
+		socd[0] = (10, 0) #SOC auf 10% bei 46V setzen
 	print ("       SOC = ", socd[0],"%")
 
 	#Warnungen auslesen

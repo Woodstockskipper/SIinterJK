@@ -1,4 +1,4 @@
-# SIinterJK  Version 1.2 vom 2.04.2024
+# SIinterJK  Version 1.3 vom 6.10.2024
 #
 # Programm zur Übersetzung der von JK BMS über RS485 gesendeten Zustandsinformationen an die 
 # CAN-Bus Schnittstelle des SMA Sunny Island 6.0 und 8.0 (getestet).
@@ -7,7 +7,9 @@
 # Achtung! Dieser Code funktioniert mit 16-Zelligen LiFePo4 Akkus. Bei abweichender Zellenzahl müssen ab Z.43 die auszulesedenden Werte (mit * versehen)nach Anleitung der Schittstellenbeschreibung des BMS angepasst werden. (am Besten die Antwort vom BMS ausdrucken und auszählen)
 # 
 # Version 1.1 erstellt und zur feien Verfügung gestellt von Stephan Brabeck am 31.3.2023
-# Version 1.2 enthält eine Abfangroutine die bei gravierenden Abweichungen zwischen Spannung und Ladezustand dazu führt, dass der Ladezustand zurückgesetzt wird.
+# Version 1.2 enthält eine Abfangroutine die bei gravierenden Abweichungen zwischen Spannung und Ladezustand dazu führt, dass der Ladezustand im unteren SOC Bereich zurückgesetzt wird.
+# Version 1.3 erweitert die Abfangroutine für den vagabundierenden SOC mit einer Regelung für den Fall, dass ein SOC von über 95% angezeigt wird, obwohl die Batterie nur teilweise geladen ist.
+# 		Diese Regelung hilft wenn das Schätzeisen der SOC Bestimmung bei den JK BMS im Laufe der Zeit sehr ungenau wird.
 #
 # -*- coding:utf-8 -*-
 import RPi.GPIO as GPIO
@@ -93,6 +95,8 @@ while True:
 		socd = (30, 0) #SOC auf 30% bei <50V und SOC >40
 	if ubattd[0] < 4600 and socd[0] > 20:
 		socd = (10, 0) #SOC auf 10% bei <46V und SOC >20
+	if ubattd[0] < 5400 and ibattd < 0 and socd[0] > 95: #Hält den SOC solange auf 90% bis alle Module vollgeladen sind und die Spannung auf über 54V steigt.
+		socd = (90, 0)
 	#print ("       SOC = ", socd[0],"%") = ", socd[0],"%")
 
 	#Warnungen auslesen

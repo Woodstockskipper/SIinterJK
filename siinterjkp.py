@@ -1,4 +1,4 @@
-# SIinterJK  Version 1.3 vom 6.10.2024
+# SIinterJK  Version 1.4 vom 24.1.2025
 #
 # Programm zur Übersetzung der von JK BMS über RS485 gesendeten Zustandsinformationen an die 
 # CAN-Bus Schnittstelle des SMA Sunny Island 6.0 und 8.0 (getestet).
@@ -9,7 +9,8 @@
 # Version 1.1 erstellt und zur feien Verfügung gestellt von Stephan Brabeck am 31.3.2023
 # Version 1.2 enthält eine Abfangroutine die bei gravierenden Abweichungen zwischen Spannung und Ladezustand dazu führt, dass der Ladezustand im unteren SOC Bereich zurückgesetzt wird.
 # Version 1.3 erweitert die Abfangroutine für den vagabundierenden SOC mit einer Regelung für den Fall, dass ein SOC von über 95% angezeigt wird, obwohl die Batterie nur teilweise geladen ist.
-# 		Diese Regelung hilft wenn das Schätzeisen der SOC Bestimmung bei den JK BMS im Laufe der Zeit sehr ungenau wird.
+# Version 1.4 Verfeinerte Abfangroutine für Einstellung des SI auf 5% - 5% - 10% - 80% löst unmittelbar Nachladung aus wenn die Batteriespannung unter 46V sinkt.
+# Diese Regelung hilft wenn das Schätzeisen der SOC Bestimmung bei den JK BMS im Laufe der Zeit sehr ungenau wird.
 #
 # -*- coding:utf-8 -*-
 import RPi.GPIO as GPIO
@@ -37,8 +38,8 @@ can0.flush_tx_buffer() # CAN socket buffer leeren
 
 # Fixe Parameter definieren: (bitte auf Eure Batterien anpassen)
 bcv = 550 # set Battery charge voltage to 55V /0,1
-dccl = 1150 # set DC charge current limitation to 115A /0,1
-ddcl = 1150 # set DC discharge current limitation to 115A /0,1
+dccl = 1150 # set DC charge current limitation to 115A /0,1 (SI 6.0) beim SI 8.0 kann man auf 140A erhöhen
+ddcl = 1150 # set DC discharge current limitation to 115A /0,1 (SI 6.0) beim SI 8.0 kann man auf 140A erhöhen
 bdv = 432 # set min. Battery discharge voltage to 43,2V /0,1
 n = 1 # Anzahl der parallel geschalteten Batterien / BMS wenn nur ein BMS ausgelesen wird.
 # SOH wird weiter unten immer auf 100% gesetzt.
@@ -91,12 +92,14 @@ while True:
 	socd = struct.unpack('<B', soc)
 	
 	# Abfangroutine für fehlerhaften SOC
-	if ubattd[0] < 5000 and socd[0] > 40:
-		socd = (30, 0) #SOC auf 30% bei <50V und SOC >40
-	if ubattd[0] < 4600 and socd[0] > 20:
-		socd = (10, 0) #SOC auf 10% bei <46V und SOC >20
-	if ubattd[0] < 5400 and ibattd < 0 and socd[0] > 95: #Hält den SOC solange auf 90% bis alle Module vollgeladen sind und die Spannung auf über 54V steigt.
-		socd = (90, 0)
+	if ubattd[0] < 5000 and socd[0] > 30:
+		socd = (30, 0) #SOC auf 30% bei <50V und SOC >30
+	if ubattd[0] < 4900 and socd[0] > 20:
+		socd = (19, 0) #SOC auf 30% bei <49V und SOC >20
+	if ubattd[0] < 4600 and socd[0] > 10:
+		socd = (9, 0) #SOC auf 10% bei <46V und SOC >10
+	if ubattd[0] < 5400 and ibattd < 0 and socd[0] > 95: 
+		socd = (90, 0) #Hält den SOC solange auf 90% bis alle Module vollgeladen sind und die Spannung auf über 54V steigt.
 	#print ("       SOC = ", socd[0],"%") = ", socd[0],"%")
 
 	#Warnungen auslesen
